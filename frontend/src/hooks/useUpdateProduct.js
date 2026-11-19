@@ -1,24 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createProduct as createProductApi } from "@/services/apiProducts";
+import { updateProduct as updateProductApi } from "@/services/apiProducts";
 import { toast } from "sonner";
-export default function useCreateProduct() {
-  const queryclient = useQueryClient();
-  const {
-    mutate: createProduct,
-    isPending,
-    isError,
-  } = useMutation({  
-    mutationKey: ["products", "create"],
-    mutationFn: ({ product }) => createProductApi(product),
+
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateProduct, isPending, isError } = useMutation({
+    mutationKey: ["products", "update"], // changed from "delete" (was a copy-paste leftover)
+    mutationFn: ({ productId, product }) => updateProductApi(productId, product),
     onSuccess: () => {
-      queryclient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["products"],
       });
-      toast.success("Product created successfully");
+      toast.success("Product updated successfully");
     },
     onError: (error) => {
       console.error(error);
+      toast.error(error.message || "Failed to update product");
     },
   });
-  return { createProduct, isPending, isError };
+
+  return { updateProduct, isPending, isError };
 }
