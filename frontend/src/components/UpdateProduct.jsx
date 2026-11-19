@@ -11,10 +11,11 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateProduct } from "@/services/apiProducts";
+import { useUpdateProduct } from "@/hooks/useUpdateProduct";
+
 import { Edit } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
+
 
 export function UpdateProduct({ currentProduct }) {
   const [product, setProduct] = useState({
@@ -22,16 +23,12 @@ export function UpdateProduct({ currentProduct }) {
     price: currentProduct.price,
     quantity: currentProduct.quantity,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
+ const [open,setOpen]=useState(false)
+ const {updateProduct,isPending}= useUpdateProduct()
 
-  async function handleUpdateProduct(e) {
+   function handleUpdateProduct(e) {
     e.preventDefault();
-    try {
-      setIsLoading(true);
-      setError("");
-      const { name, price, quantity } = product;
+   const { name, price, quantity } = product;
       if (!name || !price || !quantity) return;
       const updatedProduct = {
         name,
@@ -39,19 +36,10 @@ export function UpdateProduct({ currentProduct }) {
         quantity: Number(quantity),
       };
       // console.log(newProduct);
-      const data = await updateProduct(currentProduct._id, updatedProduct);
-      console.log(data);
-      toast.success("Product updated successfully", {
-        position: "top-right",
-      });
+        updateProduct({productId:currentProduct._id,product:updatedProduct});
+      
+     
       setOpen(false);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to Update Product");
-      toast.error("Failed to update Product", { position: "top-right" });
-    } finally {
-      setIsLoading(false);
-    }
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -118,7 +106,7 @@ export function UpdateProduct({ currentProduct }) {
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button type="submit" disabled={isLoading} form="update-product">
+          <Button type="submit" disabled={isPending} form="update-product">
             Save changes
           </Button>
         </DialogFooter>
