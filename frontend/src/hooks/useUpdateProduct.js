@@ -5,7 +5,7 @@ import { updateProduct } from "@/services/apiProducts";
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
 
-  const { mutate: update, isPending } = useMutation({
+  const { mutate: updateProductMutation, isPending } = useMutation({
     mutationFn: ({ id, updatedProduct }) =>
       updateProduct(id, updatedProduct),
 
@@ -16,5 +16,5 @@ export function useUpdateProduct() {
     },
   });
 
-  return { update, isPending };
+  return { updateProduct: updateProductMutation, isPending };
 }
