@@ -23,11 +23,11 @@ export function ProductsTable() {
       <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead></TableHead>
           <TableHead className="w-25">Name</TableHead>
           <TableHead>price</TableHead>
           <TableHead>quantity</TableHead>
           <TableHead className="text-right">last updated</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -43,12 +43,7 @@ export function ProductsTable() {
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
+    
     </Table>
   )
 }
