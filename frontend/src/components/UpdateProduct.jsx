@@ -17,7 +17,8 @@ import { Edit } from "lucide-react";
 import { useState } from "react";
 
 
-export function UpdateProduct({ currentProduct }) {
+export function UpdateProduct({ id: currentProduct._id,
+  updatedProduct, }) {
   const [product, setProduct] = useState({
     name: currentProduct.name,
     price: currentProduct.price,
